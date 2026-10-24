@@ -1,0 +1,561 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buat Kalian 💌</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.35),
+      rgba(0, 0, 0, 0.35)
+    ),
+    url("dvone.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #111;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 30px auto;
+}
+
+.card {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: rgb(0, 102, 255);
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 5px 20px #00000020;
+}
+
+h2 {
+  color: #000000;
+  font-weight: 800;
+}
+
+h3 {
+  font-weight: 700;
+}
+
+p {
+  line-height: 1.7;
+}
+
+button, input, textarea {
+  font: inherit;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  background: #ffe1eb;
+  color: #444;
+}
+
+.option:hover {
+  background: #ffc4d7;
+}
+
+.next {
+  width: 100%;
+  margin-top: 10px;
+  background: #fae901;
+  color: white;
+}
+
+input, textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #ffc4d7;
+  border-radius: 10px;
+  outline-color: #fffb00;
+}
+
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* KOTAK SURAT */
+#suratGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.surat {
+  min-width: 0;
+  background: white;
+  padding: 15px 5px;
+  border-radius: 14px;
+  border: 2px solid #dce5ff;
+  cursor: pointer;
+  transition: 0.2s;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.surat:hover {
+  transform: translateY(-3px);
+  border-color: #ffee02;
+  background: #fff0f5;
+}
+
+.surat .emoji {
+  font-size: 30px;
+}
+
+.surat p {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 8px 0 0;
+}
+
+#message {
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* KOMENTAR */
+.comment-card {
+  margin-top: 25px;
+}
+
+.comment-card h2 {
+  margin-bottom: 5px;
+}
+
+.comment-info {
+  font-size: 12px;
+  color: #665e00;
+  margin-bottom: 15px;
+}
+
+#commentList {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.comment-item {
+  background: white;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.comment-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #272ae6;
+}
+
+.comment-date {
+  font-size: 10px;
+  color: #888;
+  text-align: right;
+}
+
+.comment-text {
+  margin: 8px 0 0;
+  font-size: 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.empty-comment {
+  font-size: 13px;
+  color: #665e00;
+  text-align: center;
+  padding: 15px 0;
+}
+
+#feedback, #errorPassword, #result {
+  color: #ffe600;
+  font-size: 13px;
+}
+
+@media (max-width: 520px) {
+  #suratGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body {
+    padding: 12px;
+    background-attachment: scroll;
+  }
+
+  .card {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <section id="quiz" class="card">
+    <h2>Hai, Kalian! 💙</h2>
+    <p>Jawab pertanyaan ini dulu yaa.</p>
+    <h3 id="question"></h3>
+    <div id="options"></div>
+    <p id="feedback"></p>
+  </section>
+
+  <section id="halamanSurat" class="hidden">
+    <div class="card">
+      <h2>Surat for my fren 💌</h2>
+      <p>Cari nama lo, terus buka suratnya!</p>
+    </div>
+
+    <div id="suratGrid"></div>
+
+    <div class="card comment-card">
+      <h2>Message for me 💬</h2>
+      <p>Mau ngasih pesan buat gue ga?</p>
+      <p class="comment-info">
+        Tulis apa aja yang mau lo sampein di sini!
+      </p>
+
+      <input
+        type="text"
+        id="commentName"
+        maxlength="40"
+        placeholder="Nama (opsional)..."
+      >
+
+      <textarea
+        id="reply"
+        maxlength="1000"
+        placeholder="Tulis pesan buat Paik..."
+      ></textarea>
+
+      <button class="next" onclick="sendMessage()">
+        Kirim Komentar 💌
+      </button>
+
+      <p id="result"></p>
+
+      <hr style="border:0; border-top:1px solid #d8c400; margin:25px 0;">
+
+      <h3>Komentar Teman-Teman</h3>
+      <div id="commentList"></div>
+    </div>
+  </section>
+
+  <!-- HALAMAN PASSWORD -->
+  <section id="halamanPassword" class="card hidden">
+    <h2 id="judulPassword">🔒 Surat Rahasia</h2>
+    <p>Masukkan password buat buka surat ini.</p>
+
+    <input
+      id="passwordInput"
+      type="password"
+      placeholder="Password surat..."
+    >
+
+    <button class="next" onclick="bukaSurat()">
+      Buka Surat 💌
+    </button>
+
+    <button
+      class="next"
+      style="background:#777"
+      onclick="kembali()"
+    >
+      Kembali
+    </button>
+
+    <p id="errorPassword"></p>
+  </section>
+
+  <section id="halamanIsi" class="card hidden">
+    <h2 id="judulIsi"></h2>
+    <p id="message"></p>
+
+    <button class="next" onclick="tutupSurat()">
+      Tutup Surat
+    </button>
+  </section>
+
+</div>
+
+<script>
+
+const question = "DVONE.....";
+
+const choices = [
+  "Sukses....",
+  "Solid....",
+  "Berhasil....",
+  "Onde Mande...."
+];
+
+const correctAnswer = 3;
+
+document.getElementById("question").textContent = question;
+
+const options = document.getElementById("options");
+
+choices.forEach((choice, index) => {
+  const button = document.createElement("button");
+  button.className = "option";
+  button.textContent = choice;
+
+  button.onclick = function() {
+    if (index === correctAnswer) {
+      document.getElementById("quiz").classList.add("hidden");
+      document.getElementById("halamanSurat").classList.remove("hidden");
+    } else {
+      document.getElementById("feedback").textContent =
+        "Yahh, salah 😝 Coba lagi!";
+    }
+  };
+
+  options.appendChild(button);
+});
+
+const daftarSurat = [
+  {nama:"Amat", password:"1", pesan:"Mat, sorry ye kalo gue banyak salah. Semoga lancar ye tka lo, semangat tkanye, ujian-ujian yang laen juga ye. Minjem gunting kuku dong senen"},
+  {nama:"Dinda", password:"2", pesan:"Sorry ya din kalo gue banyak salah, Semoga lancar ya tka lo, ujian-ujian yang laen juga ya. Oiya, Nanti PKL kasih keras ya."},
+  {nama:"Nisa", password:"3", pesan:"surat ke 4 al-quran, Minta maaf ya kalo gue banyak salah. Semoga lo lancar ngerjain tka nya ya, ujian-ujian yang laen juga ya."},
+  {nama:"Aqong", password:"4", pesan:"The king of legend, Aqong sang ketua kelas. Kong, Sorry yh Kalo gue banyak salah, sorry juga yh gue suka ngatain mak lo. Semoga lo lancar ye qong ngerjain tkanye, ujian-ujian yang laen juga."},
+  {nama:"Belinda", password:"5", pesan:"Bel, sorry ya kalo gue banyak salahnya. Semoga tka lo lancar ya, ujian-ujian yang lainnya juga."},
+  {nama:"Dewa Clint", password:"6", pesan:"Dewa Kicau, Sorry ye kalo gue punya salah, Semoga lancar dh lo ngerjain tkanye, ujian-ujian yang laennye juga. Jangan kebanyakan Minum, ga bae buat lambung"},
+  {nama:"Carissa", password:"7", pesan:"Sahabat monopoli, Minta maaf ya gue banyak salah. Semoga tka lo lancar ya, ujian-ujian yang lainya jugaaa. Ntar abis tka beli monopoli lagi gas"},
+  {nama:"Bebek", password:"8", pesan:"wek wek, Sorry ya pot gue banyak salah. Semoga tka lo lancar ya, ujian-ujian yang lainnya juga. Request dong, kalo tereak volume nya di kecilin sedikit, hehe. Semangat pottt"},
+  {nama:"Depi", password:"9", pesan:"Sorry yh dep kalo gue punya salah. Semangat tkanya, semoga nilai nya memuaskan yh."},
+  {nama:"Mira", password:"10", pesan:"Sorry yh mir gue banyak salah, Semangat tkanya, semoga nilai tka nya memuaskan. Ujian yang laen juga di lancarin."},
+  {nama:"Geri", password:"11", pesan:"Gerrr, Sorry ye kalo gue banyak salah, sorry yh gue sering ngatain bapak lo. Semoga tka lo lancar yh, semangat ger. Yatim Pride."},
+  {nama:"Halil", password:"12", pesan:"Lilll. Sorry ye kalo gue banyak salah. Semoga tka lo lancar ye lil, ujian yang laen nyed juga."},
+  {nama:"Ilham", password:"13", pesan:"Ilhammmmmmm AKA Mike Tyson. Sorry ya am gue banyak salah. Semoga tka lo lancar ya am, ujian yang laennya juga, Semangat am."},
+  {nama:"Jeje", password:"14", pesan:"Jedak jeduk, Sorry ya kalo gue banyak salah, semoga tka lo lancar ya, ujian yang laen juga. Semangat TKAnya je."},
+  {nama:"Jumadil", password:"15", pesan:"Dill, sorry ye kalo gue banyak salah. Semangat ye lo tkanye. Jangan kebanyakan tidur, banyakin belajar"},
+  {nama:"Kayla", password:"16", pesan:"Kay, sorry ya kalo gue banyak salah. Semangat ya tkanya, ujiain yang lainnya juga."},
+  {nama:"Sahabat Jerom", password:"17", pesan:"Jerrr, maaf ya jer kalo aku banyak salah. Semangat ya jer tka nya. semuga mtk nya nanti bener semua."},
+  {nama:"Arpa", password:"18", pesan:"Pak, sorry ya kalo gue banyak salah, Semangat ya tkanya, semoga hasilnya memuaskan, semoga ptn sesuai univ yang lu mau juga yh."},
+  {nama:"Nnda", password:"19", pesan:"Sorry yh nan gue banyak salah, Semoga TKA lo lancar ya nan. AAMIIN."},
+  {nama:"Gabin", password:"20", pesan:"waaa, sorry ya kalo gue banyak salah. Semoga TKA lo DI permudahkan ALLAH SWT ya, Jualan gabin lagi dong."},
+  {nama:"Hanun", password:"21", pesan:"Nun, Sorry ya kalo gue banyak salah nunn, Semoga nilai tka lo memuaskan ya nun. Jangan lupa belajar."},
+  {nama:"Nopal", password:"22", pesan:"Oy, sorry yh pal kalo gue banyak salah. Belajar lo, senen udh tka, Semoga tka lo lancar ye."},
+  {nama:"Ato", password:"24", pesan:"Moooo, Sorry yh gue banyak salah sama lo. Sempetin belajar pli, gue tau lo pinter, sayang kalo ilmu lo ga di asah, belajar aje kalo sambil dagang. Mulai benerin juga jam tidur lo. Semangat ye lo tkanye"},
+  {nama:"Repi", password:"25", pesan:"Sorry ya rev kalo gue punya salah. Semoga tka lo lancar ya rev"},
+  {nama:"Rijot", password:"26", pesan:"Rija rijot, Sorry ya ja gue banyak salah. Semangat ya ja tkanya, semoga nilai lo bagus ya ja. Belajar luuu, maen mulu. Kopi kurangin, gue bilangin mak lu loh."},
+  {nama:"Sapira", password:"27", pesan:"Sorry ya pir gue banyak salah. Semangat ya tka nya, semoga nilai nya bagus ya."},
+  {nama:"Sahabat Salsa", password:"28", pesan:"My sahabatttt, Maaf ya sahabat kalo aku punya salah sama kamu. Semoga tka kamu lancar ya sahabat. Semangat belajar nya sahabat."},
+  {nama:"Saskia", password:"29", pesan:"Sas, Sorry ya kalo gue punya salah sas. Semangat tka nya, Semoga hasil nya bagus ya."},
+  {nama:"Sabrina", password:"30", pesan:"sab or bina nih? hehe. Sorry ya bin gue banyak salah. Semangat ya tka nya, semoga hasil nya bagus."},
+  {nama:"Ceker", password:"31", pesan:"Dibeli dibeliiii. hehe. Sorry ya tan kalo gue banyak salah, semangat ya tka nya. Belajar lu jangan jualan mulu biar nilai tka lu bagus. Semoga lancar ya tka lu."},
+  {nama:"Tetot", password:"32", pesan:"Tata tetot, sorry ya gue banyak salah sama lo, semoga tka lo lancar ya. Semangat tka nya, ujian yang laen nya juga ya. Request dong, kalo tereak kecilin sikit ya volume nya, hehe."},
+  {nama:"Yusup", password:"33", pesan:"Sup, sorry ya sup kalo gue banyak salah. semoga lancar ya sup tka lo, semangat sup. request dong nanti jumat lagu nya pikiran yang matang dari perunggu."},
+  {nama:"Mamoy", password:"34", pesan:"mamoyyyy, sorry ya kalo gue banyak salah sama lo, makasih juga lo sering ngasih liat catetan. Semangat ya tka nya, semoga nilai lo bagus ya."},
+  {nama:"Jilci", password:"35", pesan:"Ci, Sorry ya gue banyak salah, semoga tka lo lancar ya. Semangat ci."},
+  {nama:"Jisadin", password:"36", pesan:"oy kelelawar, sorry ye kalo gue banyak salah, semangat lo tka nye. Jangan lupa banyak-banyakin belajar"}
+];
+
+let suratDipilih = null;
+const grid = document.getElementById("suratGrid");
+
+daftarSurat.forEach((surat, index) => {
+  const kotak = document.createElement("div");
+  kotak.className = "surat";
+
+  const emoji = document.createElement("div");
+  emoji.className = "emoji";
+  emoji.textContent = "💌";
+
+  const nama = document.createElement("p");
+  nama.textContent = surat.nama;
+
+  kotak.append(emoji, nama);
+
+  kotak.onclick = function() {
+    suratDipilih = index;
+
+    document.getElementById("halamanSurat").classList.add("hidden");
+    document.getElementById("halamanPassword").classList.remove("hidden");
+
+    document.getElementById("judulPassword").textContent =
+      "🔒 Surat untuk " + surat.nama;
+
+    document.getElementById("passwordInput").value = "";
+    document.getElementById("errorPassword").textContent = "";
+  };
+
+  grid.appendChild(kotak);
+});
+
+function bukaSurat() {
+  const password = document.getElementById("passwordInput").value;
+  const surat = daftarSurat[suratDipilih];
+
+  if (surat && password === surat.password) {
+    document.getElementById("halamanPassword").classList.add("hidden");
+    document.getElementById("halamanIsi").classList.remove("hidden");
+
+    document.getElementById("judulIsi").textContent =
+      "💌 Buat lo nih, " + surat.nama;
+
+    document.getElementById("message").textContent = surat.pesan;
+  } else {
+    document.getElementById("errorPassword").textContent =
+      "Password salah! Coba lagi 😝";
+  }
+}
+
+document.getElementById("passwordInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") bukaSurat();
+});
+
+function kembali() {
+  document.getElementById("halamanPassword").classList.add("hidden");
+  document.getElementById("halamanSurat").classList.remove("hidden");
+}
+
+function tutupSurat() {
+  document.getElementById("halamanIsi").classList.add("hidden");
+  document.getElementById("halamanSurat").classList.remove("hidden");
+}
+
+const COMMENT_KEY = "komentarPaikWebsite_v2";
+
+localStorage.removeItem("komentarPaikWebsite");
+
+let komentar = [];
+
+try {
+  komentar = JSON.parse(localStorage.getItem(COMMENT_KEY)) || [];
+} catch (error) {
+  komentar = [];
+}
+
+function tampilkanKomentar() {
+  const commentList = document.getElementById("commentList");
+  commentList.replaceChildren();
+
+  if (komentar.length === 0) {
+    const kosong = document.createElement("p");
+    kosong.className = "empty-comment";
+    kosong.textContent =
+      "Belum ada komentar. Jadi yang pertama, yuk!";
+    commentList.appendChild(kosong);
+    return;
+  }
+
+  [...komentar].reverse().forEach((item) => {
+    const kotak = document.createElement("div");
+    kotak.className = "comment-item";
+
+    const header = document.createElement("div");
+    header.className = "comment-header";
+
+    const nama = document.createElement("span");
+    nama.className = "comment-name";
+    nama.textContent = item.nama || "Anonim";
+
+    const tanggal = document.createElement("span");
+    tanggal.className = "comment-date";
+    tanggal.textContent = item.tanggal;
+
+    const isi = document.createElement("p");
+    isi.className = "comment-text";
+    isi.textContent = item.pesan;
+
+    header.append(nama, tanggal);
+    kotak.append(header, isi);
+    commentList.appendChild(kotak);
+  });
+}
+
+function sendMessage() {
+  const namaInput = document.getElementById("commentName");
+  const replyInput = document.getElementById("reply");
+  const result = document.getElementById("result");
+
+  // Nama boleh dikosongkan.
+  const nama = namaInput.value.trim() || "Anonim";
+  const pesan = replyInput.value.trim();
+
+  if (pesan === "") {
+    result.textContent = "Tulis pesannya dulu dongg 🥹";
+    return;
+  }
+
+  const komentarBaru = {
+    nama: nama,
+    pesan: pesan,
+    tanggal: new Date().toLocaleString("id-ID", {
+      dateStyle: "short",
+      timeStyle: "short"
+    })
+  };
+
+  komentar.push(komentarBaru);
+
+  try {
+    localStorage.setItem(COMMENT_KEY, JSON.stringify(komentar));
+  } catch (error) {
+    console.warn("Komentar tidak dapat disimpan di browser.");
+  }
+
+  tampilkanKomentar();
+  replyInput.value = "";
+  namaInput.value = "";
+  result.textContent = "Komentar berhasil ditambahkan!";
+}
+
+tampilkanKomentar();
+</script>
+
+</body>
+</html>
